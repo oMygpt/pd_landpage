@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PaperDaily - 个性化论文推荐系统，帮助科研人员高效追踪最新研究成果">
+    <meta name="keywords" content="arXiv, 论文推荐, 科研工具, 文献追踪">
+
+    <title>PaperDaily - 你的个性化科学论文前沿哨兵</title>
+    <!-- 引入字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入图标 -->
+    <!-- 在head中添加预加载和预连接 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <style>
+        :root {
+            --primary-color: #2563eb; /* 主色调：专业蓝色 */
+            --secondary-color: #64748b; /* 辅助色：冷静灰色 */
+            --accent-color: #f97316; /* 强调色：醒目橙色，用于CTA */
+            --light-bg: #f8fafc; /* 浅色背景 */
+            --dark-bg: #1e293b; /* 深色背景 */
+            --text-color: #334155; /* 主文本色 */
+            --light-text: #f8fafc; /* 浅色文本 */
+            --success-color: #10b981; /* 成功提示色 */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', 'Lato', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-cta {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-cta:hover {
+            background-color: #ea580c;
+            transform: translateY(-2px);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 100px;
+            background-color: var(--light-bg);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .hero-text {
+            flex: 1;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: var(--dark-bg);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--secondary-color);
+        }
+        
+        .hero-cta {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .hero-cta:hover {
+            background-color: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .hero-image {
+            flex: 1;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Problems Section */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--dark-bg);
+        }
+        
+        .problems {
+            background-color: #fff;
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .problem-card {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .problem-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .problem-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .problem-desc {
+            color: var(--secondary-color);
+        }
+        
+        .transition-text {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+        
+        /* Solution Section */
+        .solution {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+        
+        .solution .section-title {
+            color: var(--light-text);
+        }
+        
+        .solution-desc {
+            text-align: center;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            transition: transform 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .workflow {
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .workflow-step {
+            text-align: center;
+            flex: 1;
+            max-width: 200px;
+            position: relative;
+        }
+        
+        .workflow-step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.3);
+            width: 50%;
+            top: 40px;
+            right: -25%;
+        }
+        
+        .workflow-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+        }
+        
+        .workflow-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        /* Benefits Section */
+        .benefits {
+            background-color: #fff;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(180px, 1fr));
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+        
+        .benefit-card {
+            padding: 30px 20px;
+            min-width: 180px;
+        }
+        
+        .benefit-icon {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .benefit-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .benefit-desc {
+            font-size: 0.9rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background-color: var(--light-bg);
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .footer-desc {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .footer-links-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .footer-link {
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+        
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .workflow {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            
+            .workflow-step:not(:last-child)::after {
+                display: none;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="navbar">
+        <div class="container">
+            <a href="#" class="logo">PaperDaily</a>
+            <nav class="nav-links">
+
+                <a href="#" class="nav-link">登录</a>
+                <a href="#" class="nav-cta">立即注册</a>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text animate">
+                    <h1 class="hero-title">不错过，不错位：你的个性化科学论文前沿哨兵</h1>
+                    <p class="hero-subtitle">基于你独特的研究兴趣，PaperDaily 智能分析最新科学论文，每日推送最相关文献。节省时间，专注科研突破。</p>
+                    <!-- 为CTA按钮添加ARIA标签 -->
+                    <a href="#" class="hero-cta" aria-label="立即注册PaperDaily">开始获取个性化推荐</a>
+                    
+                    <!-- 为图片添加alt描述 -->
+                    
+                </div>
+                <div class="hero-image animate" style="animation-delay: 0.2s;">
+                    <!-- <img src="/api/placeholder/600/400" alt="PaperDaily 筛选效果示意图" /> -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Problems Section -->
+    <section id="problems" class="problems section">
+        <div class="container">
+            <h2 class="section-title">还在层出不穷的论文信息海洋中挣扎？</h2>
+            <div class="problems-grid">
+                <div class="problem-card animate" style="animation-delay: 0.1s;">
+                    <i class="fas fa-water problem-icon"></i>
+                    <h3 class="problem-title">信息过载</h3>
+                    <p class="problem-desc">每日海量新增，筛选耗时。面对数百篇新论文，如何找到真正相关的？</p>
+                </div>
+                <div class="problem-card animate" style="animation-delay: 0.2s;">
+                    <i class="fas fa-puzzle-piece problem-icon"></i>
+                    <h3 class="problem-title">错失恐惧</h3>
+                    <p class="problem-desc">担心错过关键论文。那篇能改变你研究方向的文章，可能就藏在今天的更新中。</p>
+                </div>
+                <div class="problem-card animate" style="animation-delay: 0.3s;">
+                    <i class="fas fa-battery-quarter problem-icon"></i>
+                    <h3 class="problem-title">精力分散</h3>
+                    <p class="problem-desc">手动检索，效率低下。每天花费大量时间浏览，挤占真正研究的时间。</p>
+                </div>
+                <div class="problem-card animate" style="animation-delay: 0.4s;">
+                    <i class="fas fa-random problem-icon"></i>
+                    <h3 class="problem-title">推送泛滥</h3>
+                    <p class="problem-desc">通用订阅，不够精准。类别太宽泛，大部分推送内容与你的实际研究关系不大。</p>
+                </div>
+            </div>
+            <p class="transition-text animate" style="animation-delay: 0.5s;">我们懂你。追踪最新进展，应该更智能、更轻松。</p>
+        </div>
+    </section>
+    
+    <!-- Solution Section -->
+    <section id="how-it-works" class="solution section">
+        <div class="container">
+            <h2 class="section-title">PaperDaily：为你而生的智能前沿哨兵</h2>
+
+            <p class="solution-desc">PaperDaily 从多个权威来源获取最新研究，基于你的具体研究兴趣，智能筛选：</p>
+            <div class="features-grid">
+                <div class="feature-card animate" style="animation-delay: 0.1s;">
+                    <i class="fas fa-bullseye feature-icon"></i>
+                    <h3 class="feature-title">精准匹配</h3>
+                    <p>智能理解你的需求，关联多平台最新内容，建立个性化兴趣模型。</p>
+                </div>
+                <div class="feature-card animate" style="animation-delay: 0.2s;">
+                    <i class="fas fa-robot feature-icon"></i>
+                    <h3 class="feature-title">自动追踪</h3>
+                    <p>每日扫描最新论文，无需人工干预，持续监控前沿动态。</p>
+                </div>
+                <div class="feature-card animate" style="animation-delay: 0.3s;">
+                    <i class="fas fa-brain feature-icon"></i>
+                    <h3 class="feature-title">智能分析</h3>
+                    <p>基于相关性，筛选核心文献，智能排序最重要的研究成果。</p>
+                </div>
+                <div class="feature-card animate" style="animation-delay: 0.4s;">
+                    <i class="fas fa-envelope feature-icon"></i>
+                    <h3 class="feature-title">个性推送</h3>
+                    <p>只给你最需要的每日摘要，清晰呈现，一目了然。</p>
+                </div>
+            </div>
+            
+            <div class="workflow animate" style="animation-delay: 0.5s;">
+                <div class="workflow-step">
+                    <div class="workflow-icon">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h4 class="workflow-title">输入兴趣</h4>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h4 class="workflow-title">智能分析</h4>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-icon">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <h4 class="workflow-title">每日获取推荐</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Benefits Section -->
+    <section id="benefits" class="benefits section">
+        <div class="container">
+            <h2 class="section-title">PaperDaily 为你创造的核心价值</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card animate" style="animation-delay: 0.1s;">
+                    <i class="fas fa-clock benefit-icon"></i>
+                    <h3 class="benefit-title">节省宝贵时间</h3>
+                    <p class="benefit-desc">告别数小时筛选，几分钟掌握前沿。将论文搜索时间减少 80%，专注于真正重要的事情。</p>
+                </div>
+                <div class="benefit-card animate" style="animation-delay: 0.2s;">
+                    <i class="fas fa-search benefit-icon"></i>
+                    <h3 class="benefit-title">保持领域领先</h3>
+                    <p class="benefit-desc">不错过任何一篇与你研究相关的关键论文。永远站在你领域的最前沿，掌握最新突破。</p>
+                </div>
+                <div class="benefit-card animate" style="animation-delay: 0.3s;">
+                    <i class="fas fa-lightbulb benefit-icon"></i>
+                    <h3 class="benefit-title">专注核心研究</h3>
+                    <p class="benefit-desc">解放精力，投入思考、实验与创新。让你的时间用在创造价值，而非筛选信息上。</p>
+                </div>
+                <div class="benefit-card animate" style="animation-delay: 0.4s;">
+                    <i class="fas fa-sliders benefit-icon"></i>
+                    <h3 class="benefit-title">高度个性化</h3>
+                    <p class="benefit-desc">超越宽泛分类，真正匹配你的独特兴趣点。推荐结果随你的反馈不断优化进步。</p>
+                </div>
+                <div class="benefit-card animate" style="animation-delay: 0.5s;">
+                    <i class="fas fa-magic benefit-icon"></i>
+                    <h3 class="benefit-title">激发潜在灵感</h3>
+                    <p class="benefit-desc">发现你可能忽略但高度相关的交叉领域文献。打开研究视野，激发创新思路。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA Section -->
+    <section class="cta-section section">
+        <div class="container">
+            <h2 class="cta-title animate">准备好站在知识的最前沿了吗？</h2>
+            <p class="cta-subtitle animate" style="animation-delay: 0.1s;">注册 PaperDaily，体验个性化科学论文每日推荐。</p>
+            <a href="#" class="hero-cta animate" style="animation-delay: 0.2s;">立即开始你的高效研究之旅</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">PaperDaily</div>
+                    <p class="footer-desc">让每一位研究者都能轻松、高效地站在知识的最前沿，<br>将"信息焦虑"转化为"研究动力"。</p>
+                    <p class="footer-desc">不错过重要进展，不错位研究焦点。</p>
+                    © 2025 PaperDaily. 保留所有权利。
+                </div>
+                <div>
+                    <h3 class="footer-links-title">关于我们</h3>
+                    <div class="footer-links">
+
+                        <a href="#" class="footer-link">博客</a>
+                        <a href="#" class="footer-link">联系我们</a>
+                        <a href="#" class="footer-link">数据来源</a>
+                        <a href="#" class="footer-link">隐私政策</a>
+                    </div>
+                </div>
+                <!-- 修改前 -->
+            <div class="footer-bottom">
+
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 简单的动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate');
+            
+            function checkScroll() {
+                animatedElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.style.opacity = '1';
+                    }
+                });
+            }
+            
+            // 初始检查
+            animatedElements.forEach(element => {
+                element.style.opacity = '0';
+            });
+            
+            window.addEventListener('scroll', checkScroll);
+            checkScroll();
+            
+            // 移动菜单
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            });
+        });
+    </script>
+</body>
+</html>
+<!-- 在head中添加meta描述和关键词 -->
+
