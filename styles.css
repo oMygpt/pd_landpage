@@ -306,7 +306,7 @@ a {
 .process-flowchart:hover {
     transform: perspective(1000px) rotateY(0) rotateX(0);
 }
-}
+
 
 .flow-node {
     background: #f8fafc;
@@ -645,35 +645,130 @@ footer {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    .navbar {
+        padding: 15px 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        padding-top: 140px;
+        padding-bottom: 60px;
+        min-height: auto;
+    }
+
     .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 40px;
     }
 
     .hero-text h1 {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
 
-    .hero-text p {
-        margin: 0 auto 40px;
+    .hero-text p.hero-desc {
+        margin: 0 auto 30px;
+        font-size: 1.1rem;
+    }
+
+    .service-notice {
+        margin: 0 auto 30px;
+        text-align: left;
+    }
+
+    .cta-group {
+        align-items: center;
     }
 
     .cta-btn {
         width: 100%;
+        max-width: 300px;
     }
 
-    .preview-image {
-        margin-top: 40px;
-        transform: none;
+    .process-flowchart {
+        transform: none !important;
+        min-height: auto;
+        padding: 20px;
+    }
+
+    .flow-node {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .node-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .node-content h4 {
+        font-size: 1rem;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .showcase {
+        padding: 40px 0;
+    }
+
+    .showcase-container {
+        flex-direction: column;
+        animation: none;
+        padding: 0;
+    }
+
+    .showcase-container:hover {
+        animation: none;
+    }
+
+    .paper-card {
+        min-width: 100% !important;
+        transform: none !important;
+    }
+
+    .features-grid,
+    .benefits-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .footer-content {
         flex-direction: column;
         gap: 40px;
+        text-align: center;
+    }
+
+    .footer-brand p {
+        margin: 16px auto 0;
     }
 
     .footer-links {
         flex-direction: column;
-        gap: 40px;
+        gap: 30px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .link-group {
+        text-align: center;
     }
 }
